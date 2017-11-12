@@ -1,0 +1,460 @@
+<!--
+    The below code is to build a simple calculator with addition(+), subtraction(-), mulitiplication(x), division and modulus(%) operations.
+    The first input is for entering values by clicking on the number/operations buttons or via the keyboard. Alphabets cannot be entered.
+    The second input is read-only and just displays the result after evaluation of the expression in the first input.
+    Division by zero is taken care of. So are other miscellaneous possible errors in feeding in an expression (eg: entering only operators and no operands)
+-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+
+
+    <style>
+        html {
+            background-color: rgb(243, 224, 190);
+        }
+
+        table {
+            background-color: rgba(43, 43, 43, 0.6);
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 45px;
+            box-shadow: 1px 1px 8px rgb(83, 83, 83);
+        }
+
+        td {
+            align-content: center;
+        }
+
+        .operand {
+            display: block;
+            height: 65px;
+            width: 65px;
+            border-radius: 50%;
+            border: none;
+            background-color: rgba(43, 43, 43, 0.6);
+            font-family: Helvetica;
+            font-weight: 100;
+            font-size: 21px;
+            color: white;
+            margin: 3px;
+        }
+
+
+        .operator {
+            display: block;
+            height: 65px;
+            width: 65px;
+            border-radius: 50%;
+            border: none;
+            background-color: rgba(255, 165, 0, 0.8);
+            font-family: Helvetica;
+            font-weight: 100;
+            font-size: 21px;
+            color: white;
+            margin: 3px;
+        }
+
+        .other {
+            display: block;
+            height: 65px;
+            width: 65px;
+            border-radius: 50%;
+            border: none;
+            background-color: rgba(169, 169, 169, 0.9);
+            font-family: Helvetica;
+            font-weight: 100;
+            font-size: 21px;
+            color: white;
+            margin: 3px;
+        }
+
+
+        .operand:hover {
+            box-shadow: 1px 1px 15px rgb(83, 83, 83);
+            background-color: rgba(255, 255, 255, 0.9);
+            color: rgb(75, 75, 75);
+        }
+
+        .operator:hover {
+            box-shadow: 1px 1px 15px rgb(83, 83, 83);
+            background-color: rgba(255, 255, 255, 0.9);
+            color: rgb(75, 75, 75);
+        }
+
+        .other:hover {
+            box-shadow: 1px 1px 15px rgb(83, 83, 83);
+            background-color: rgba(255, 255, 255, 0.9);
+            color: rgb(75, 75, 75);
+        }
+
+        #c:hover {
+            box-shadow: 1px 1px 15px rgb(83, 83, 83);
+            background-color: rgba(165, 52, 52, 0.8);
+            color: rgb(7255, 255, 255);
+        }
+
+
+        input[type=text] {
+            padding: 10px;
+            padding-right: 20px;
+            border-radius: 65px;
+            font-size: 25px;
+            border-width: 0px;
+            font-family: Helvetica;
+            position: relative;
+            width: 87.8%;
+            background-color: rgba(43, 43, 43, 0.6);
+            color: rgb(255, 255, 255);
+            text-align: right;
+            margin-bottom: 3%;
+            align-self: center;
+        }
+
+
+
+
+        button:active {
+            outline: none;
+            border: none;
+        }
+
+        button:focus {
+            outline: 0;
+        }
+
+        form:active {
+            outline: none;
+            border: none;
+        }
+
+        form:focus {
+            outline: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <table align="center">
+        <form name="calc">
+            <tr>
+
+                <td align="center" colspan="4">
+                    <input id="i1" type="text" value="0" onkeypress="return Validate(event)" onfocus="onf()" onblur="onb()">
+                    <br>
+                </td>
+
+            </tr>
+            <tr>
+                <td align="center" colspan="4">
+                    <input id="i2" type="text" value="" readonly>
+                    <br>
+                </td>
+
+            </tr>
+        </form>
+        <tr>
+            <td colspan="2" align="center">
+                <button id="c" style="width:140px; height:65px; border-radius:50px;" class="other" onclick="clr()">C</button>
+            </td>
+            <td align="center">
+                <button id="mod" class="operator" onclick="modulus()">%</button>
+            </td>
+            <td>
+                <button id="div" class="operator" onclick="divide()">/</button>
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center">
+                <button id="seven" class="operand" onclick="fseven()">7</button>
+            </td>
+            <td align="center">
+                <button id="eight" class="operand" onclick="feight()">8</button>
+            </td>
+            <td align="center">
+                <button id="nine" class="operand" onclick="fnine()">9</button>
+            </td>
+            <td align="center">
+                <button id="mul" class="operator" onclick="multiply()">x</button>
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center">
+                <button id="four" class="operand" onclick="ffour()">4</button>
+            </td>
+            <td align="center">
+                <button id="five" class="operand" onclick="ffive()">5</button>
+            </td>
+            <td align="center">
+                <button id="six" class="operand" onclick="fsix()">6</button>
+            </td>
+            <td align="center">
+                <button id="sub" class="operator" onclick="subtract()">-</button>
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center">
+                <button id="one" class="operand" onclick="fone()">1</button>
+            </td>
+            <td align="center">
+                <button id="two" class="operand" onclick="ftwo()">2</button>
+            </td>
+            <td align="center">
+                <button id="three" class="operand" onclick="fthree()">3</button>
+            </td>
+            <td align="center">
+                <button id="add" class="operator" onclick="addition()">+</button>
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center" colspan="2">
+                <button id="zero" style="width:140px; height:65px; border-radius:50px" class="operand" onclick="fzero()">0</button>
+            </td>
+            <td align="center">
+                <button id="dot" class="operand" onclick="point()">.</button>
+            </td>
+            <td align="center">
+                <button id="equal" class="operator" onclick="final()">=</button>
+            </td>
+        </tr>
+
+    </table>
+
+
+
+    <script>
+        var result;
+        var str1;
+        var str2;
+
+
+        //Function to allow only number and operators, restrict alphabets
+        function Validate(event) {
+        var regex = new RegExp("^[0-9%*x+-/()]");
+        var key = String.fromCharCode(event.charCode ? event.which : event.charCode);
+        if (!regex.test(key)) {
+            event.preventDefault();
+            return false;
+        }
+    }  
+
+        //Event Handler for onfocus()
+        function onf() {
+            if (document.calc.i1.value === "0") {
+                document.calc.i1.value = "";
+            }
+        }
+
+        //Event Handler for onblur()
+        function onb()
+        {
+            if (document.calc.i1.value === "") {
+                document.calc.i1.value = "0";
+            }
+        }
+
+        //Function on clicking 1
+        function fone() {
+            if (document.calc.i1.value === "0" || document.calc.i1.value == result) {
+                document.calc.i1.value = "1";
+            }
+            else {
+                document.calc.i1.value = document.calc.i1.value + "1";
+            }
+        }
+
+        //Function on clicking 2
+        function ftwo() {
+            if (document.calc.i1.value === "0" || document.calc.i1.value == result) {
+                document.calc.i1.value = "2";
+            }
+            else {
+                document.calc.i1.value = document.calc.i1.value + "2";
+            }
+        }
+        
+        //Function on clicking 3
+        function fthree() {
+            if (document.calc.i1.value === "0" || document.calc.i1.value == result) {
+                document.calc.i1.value = "3";
+            }
+            else {
+                document.calc.i1.value = document.calc.i1.value + "3";
+            }
+        }
+
+        //Function on clicking 4
+        function ffour() {
+            if (document.calc.i1.value === "0" || document.calc.i1.value == result) {
+                document.calc.i1.value = "4";
+            }
+            else {
+                document.calc.i1.value = document.calc.i1.value + "4";
+            }
+        }
+
+        //Function on clicking 5
+        function ffive() {
+            if (document.calc.i1.value === "0" || document.calc.i1.value == result) {
+                document.calc.i1.value = "5";
+            }
+            else {
+                document.calc.i1.value = document.calc.i1.value + "5";
+            }
+        }
+
+        //Function on clicking 6
+        function fsix() {
+            if (document.calc.i1.value === "0" || document.calc.i1.value == result) {
+                document.calc.i1.value = "6";
+            }
+            else {
+                document.calc.i1.value = document.calc.i1.value + "6";
+            }
+        }
+
+        //Function on clicking 7
+        function fseven() {
+            if (document.calc.i1.value === "0" || document.calc.i1.value == result) {
+                document.calc.i1.value = "7";
+            }
+            else {
+                document.calc.i1.value = document.calc.i1.value + "7";
+            }
+        }
+
+        //Function on clicking 8
+        function feight() {
+            if (document.calc.i1.value === "0" || document.calc.i1.value == result) {
+                document.calc.i1.value = "8";
+            }
+            else {
+                document.calc.i1.value = document.calc.i1.value + "8";
+            }
+        }
+
+        //Function on clicking 9
+        function fnine() {
+            if (document.calc.i1.value === "0" || document.calc.i1.value == result) {
+                document.calc.i1.value = "9";
+            }
+            else {
+                document.calc.i1.value = document.calc.i1.value + "9";
+            }
+        }
+
+
+        //Function on clicking 0
+        function fzero() {
+            if (document.calc.i1.value === "0") {
+                document.calc.i1.value = "0";
+            }
+            else if (document.calc.i1.value == result) {
+                document.calc.i1.value = 0;
+            }
+            else {
+                document.calc.i1.value = document.calc.i1.value + "0";
+            }
+        }
+
+    //Function on clicking point button
+        function point() {
+            var c = 0;
+            if (document.calc.i1.value === "0") {
+                document.calc.i1.value = "0.";
+                c++;
+            }
+            else {
+                document.calc.i1.value = document.calc.i1.value + ".";
+                c++
+            }
+        }
+
+
+        //Function on clicking C
+        function clr() {
+            document.calc.i1.value = "0";
+            document.calc.i2.value = "";
+            return;
+        }
+
+
+
+        function addition() {
+            if (document.calc.i1.value != "0") {
+                document.calc.i1.value = document.calc.i1.value + "+";
+            }
+        }
+
+        function subtract() {
+            if (document.calc.i1.value != "0") {
+                document.calc.i1.value = document.calc.i1.value + "-";
+            }
+            if (document.calc.i1.value === "0") {
+                document.calc.i1.value = "-";
+            }
+        }
+
+        function multiply() {
+            if (document.calc.i1.value != "0") {
+                document.calc.i1.value = document.calc.i1.value + "x";
+            }
+        }
+
+
+        function divide() {
+            if (document.calc.i1.value != "0") {
+                document.calc.i1.value = document.calc.i1.value + "/";
+            }
+        }
+
+        function modulus() {
+            if (document.calc.i1.value != "0") {
+                document.calc.i1.value = document.calc.i1.value + "%";
+            }
+        }
+
+        //Function on clicking =
+        function final() {
+
+            str1 = document.calc.i1.value;
+            str2 = str1.split("x").join("*");
+            //Handling division by xero
+            if (str2.includes("/0") == true) {
+                document.calc.i2.value = "Error";
+                return;
+            }
+
+            //Error Handling for other cases
+            try
+            {
+                result=eval(str2);
+            }
+            catch(e)
+            {
+                document.calc.i2.value="Error";
+                return;
+            }
+
+            document.calc.i2.value = result;
+
+        }
+
+
+    </script>
+
+</body>
+
+</html>
